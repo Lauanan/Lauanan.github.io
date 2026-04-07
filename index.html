@@ -1,84 +1,491 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Jianan Liu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jia'nan Liu</title>
   <style>
+    :root {
+      --bg: #061226;
+      --bg2: #0b1b33;
+      --card: rgba(18, 30, 53, 0.82);
+      --card-border: rgba(130, 180, 255, 0.16);
+      --text: #eef4ff;
+      --muted: #aebeda;
+      --accent: #61dafb;
+      --accent2: #8b5cf6;
+      --accent3: #22c55e;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(97, 218, 251, 0.18), transparent 26%),
+        radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.14), transparent 24%),
+        radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.10), transparent 22%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height: 100vh;
     }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      pointer-events: none;
+      opacity: 0.28;
+    }
+
     .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 60px 20px;
+      position: relative;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+      z-index: 1;
     }
-    h1 {
-      font-size: 48px;
+
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
     }
-    .tag {
-      background: #1e293b;
-      padding: 6px 12px;
-      border-radius: 20px;
-      margin-right: 8px;
-      display: inline-block;
+
+    .lang-toggle {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid var(--card-border);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(14px);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
     }
+
+    .lang-toggle button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .lang-toggle button.active {
+      color: #07111f;
+      background: linear-gradient(135deg, var(--accent), #c2f3ff);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
     .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 16px;
-      margin-top: 20px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
     }
-    a {
-      color: #38bdf8;
+
+    .hero-main {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(97,218,251,0.28), transparent 62%);
+      filter: blur(8px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(97, 218, 251, 0.10);
+      border: 1px solid rgba(97, 218, 251, 0.22);
+      color: #bfefff;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      font-size: clamp(20px, 2.3vw, 30px);
+      color: #dbe8ff;
+      margin: 18px 0 14px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.85;
+      max-width: 760px;
+      margin: 0;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #eef7ff;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .mini-title {
+      font-size: 14px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8fb4ff;
+      margin-bottom: 10px;
+    }
+
+    .metric {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #e9f0ff;
+    }
+
+    .focus-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .focus-item {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #dfeaff;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 32px;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .body-text {
+      color: var(--muted);
+      line-height: 1.95;
+      font-size: 17px;
+    }
+
+    .research-list {
+      display: grid;
+      gap: 14px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .research-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex: 0 0 auto;
+      box-shadow: 0 0 16px rgba(97, 218, 251, 0.8);
+    }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .link-card {
+      display: block;
       text-decoration: none;
+      color: var(--text);
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.2s ease;
+    }
+
+    .link-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(97,218,251,0.35);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    }
+
+    .link-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .link-desc {
+      display: block;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      text-align: center;
+      color: #8ea3c8;
+      font-size: 14px;
+    }
+
+    [data-lang] { display: none; }
+    [data-lang].show { display: block; }
+    .inline[data-lang].show { display: inline; }
+    .flex[data-lang].show { display: flex; }
+
+    @media (max-width: 920px) {
+      .hero, .grid {
+        grid-template-columns: 1fr;
+      }
+      .links {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 28px 16px 52px;
+      }
+      .card {
+        padding: 22px;
+      }
     }
   </style>
 </head>
-
 <body>
-<div class="container">
+  <div class="container">
+    <div class="topbar">
+      <div class="lang-toggle">
+        <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+        <button id="btn-zh" onclick="setLang('zh')">中文</button>
+      </div>
+    </div>
 
-  <h1>Jianan Liu</h1>
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="eyebrow">
+          <span data-lang="en" class="inline show">AI Safety · Agent Safety · Trustworthy AI</span>
+          <span data-lang="zh" class="inline">人工智能安全 · Agent安全 · 可信人工智能</span>
+        </div>
 
-  <p>
-    PhD Student @ Fudan University & Shanghai Innovation Institute (SII)
-  </p>
+        <h1>Jia'nan Liu</h1>
 
-  <p>
-    <span class="tag">Trustworthy AI</span>
-    <span class="tag">AI Safety</span>
-    <span class="tag">Agent Safety</span>
-  </p>
+        <div class="subtitle">
+          <span data-lang="en" class="show">PhD Student @ Fudan University & Shanghai Innovation Institute (SII)</span>
+          <span data-lang="zh">复旦大学 & 上海创智学院 联合培养博士生</span>
+        </div>
 
-  <div class="card">
-    <h2>About</h2>
-    <p>
-      I am working on safety challenges in LLM agents, focusing on agent guard,
-      runtime safety, and governance-inspired mechanisms such as approval workflows.
-    </p>
+        <p class="description">
+          <span data-lang="en" class="show">
+            I am working on safety research for LLMs and agentic systems, with a particular focus on Agent Guard, LLM Guard,
+            and governance-inspired mechanisms for safe, reliable, and controllable AI systems.
+          </span>
+          <span data-lang="zh">
+            我目前主要研究大语言模型与智能体系统的安全问题，重点关注 Agent Guard、LLM Guard，以及面向安全、可靠、可控 AI 系统的治理式防护机制。
+          </span>
+        </p>
+
+        <div class="tags">
+          <span class="tag">Trustworthy AI</span>
+          <span class="tag">AI Safety</span>
+          <span class="tag">Agent Safety</span>
+          <span class="tag">LLM Guard</span>
+          <span class="tag">Agent Guard</span>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="card">
+          <div class="mini-title">
+            <span data-lang="en" class="show">Current Focus</span>
+            <span data-lang="zh">当前研究重点</span>
+          </div>
+          <div class="focus-list">
+            <div class="focus-item">
+              <span data-lang="en" class="show">Safety mechanisms for LLMs and autonomous agents</span>
+              <span data-lang="zh">面向大模型与自主智能体的安全防护机制</span>
+            </div>
+            <div class="focus-item">
+              <span data-lang="en" class="show">Agent Guard, LLM Guard, runtime intervention, and governance-inspired control</span>
+              <span data-lang="zh">Agent Guard、LLM Guard、运行时干预与治理式控制</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="mini-title">
+            <span data-lang="en" class="show">Contact</span>
+            <span data-lang="zh">联系方式</span>
+          </div>
+          <div class="metric">Liujianan@sii.edu.cn</div>
+          <div class="metric">Shanghai, China</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>
+          <span data-lang="en" class="show">About</span>
+          <span data-lang="zh">关于我</span>
+        </h2>
+        <p class="body-text">
+          <span data-lang="en" class="show">
+            My research centers on safety issues in LLMs and agentic AI. I am particularly interested in how guard mechanisms
+            can be designed to constrain risky behaviors, improve controllability, and support more trustworthy deployment of
+            advanced AI systems. My recent interests include Agent Guard, LLM Guard, runtime protection, and governance-based
+            defense strategies.
+          </span>
+          <span data-lang="zh">
+            我的研究聚焦于大语言模型与 Agent 系统中的安全问题。我尤其关注如何通过 guard 机制约束高风险行为、增强系统可控性，并支撑更可信的高级 AI 系统部署。近期重点包括 Agent Guard、LLM Guard、运行时保护以及基于治理思想的防御策略。
+          </span>
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>
+          <span data-lang="en" class="show">Research</span>
+          <span data-lang="zh">研究方向</span>
+        </h2>
+        <ul class="research-list">
+          <li class="research-item">
+            <span class="dot"></span>
+            <div>
+              <span data-lang="en" class="show">Agent Guard & LLM Guard</span>
+              <span data-lang="zh">Agent Guard 与 LLM Guard</span>
+            </div>
+          </li>
+          <li class="research-item">
+            <span class="dot"></span>
+            <div>
+              <span data-lang="en" class="show">Risk Testing & Path Protection</span>
+              <span data-lang="zh">风险测试与路径保护</span>
+            </div>
+          </li>
+          <li class="research-item">
+            <span class="dot"></span>
+            <div>
+              <span data-lang="en" class="show">Trustworthy Agent Systems</span>
+              <span data-lang="zh">可信智能体系统</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+      <h2>
+        <span data-lang="en" class="show">Links</span>
+        <span data-lang="zh">链接</span>
+      </h2>
+      <div class="links">
+        <a class="link-card" href="https://github.com/Lauanan" target="_blank" rel="noreferrer">
+          <span class="link-name">GitHub</span>
+          <span class="link-desc">
+            <span data-lang="en" class="show">Code, projects, and open-source work.</span>
+            <span data-lang="zh">代码仓库、项目与开源工作。</span>
+          </span>
+        </a>
+
+        <a class="link-card" href="mailto:Liujianan@sii.edu.cn">
+          <span class="link-name">Email</span>
+          <span class="link-desc">Liujianan@sii.edu.cn</span>
+        </a>
+      </div>
+      <div class="footer-note">
+        <span data-lang="en" class="show">Google Scholar will be added later.</span>
+        <span data-lang="zh">Google Scholar 后续补充。</span>
+      </div>
+    </section>
   </div>
 
-  <div class="card">
-    <h2>Research</h2>
-    <ul>
-      <li>Agent Guard & Runtime Safety</li>
-      <li>Risk Testing & Path Protection</li>
-      <li>Trustworthy Agent Systems</li>
-    </ul>
-  </div>
+  <script>
+    function setLang(lang) {
+      const all = document.querySelectorAll('[data-lang]');
+      all.forEach(el => el.classList.remove('show'));
+      document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => el.classList.add('show'));
 
-  <div class="card">
-    <h2>Links</h2>
-    <p>
-      <a href="https://github.com/Lauanan">GitHub</a><br>
-      <a href="#">Google Scholar</a><br>
-      <a href="mailto:your-email@example.com">Email</a>
-    </p>
-  </div>
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
 
-</div>
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    }
+  </script>
 </body>
 </html>
